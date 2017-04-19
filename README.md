@@ -10,7 +10,7 @@ Team Members-
 |Ginni Malik             |    gm1908    |  N18379090    |
 
 
-#####Project Choice –
+Project Choice –
 We have selected the project area – “exploring NYC Taxi Trips”.
 We would use the following datasets –
 
@@ -18,7 +18,6 @@ We would use the following datasets –
 +	Taxi Data
 +	Uber Data
 +	CitiBike Data
-+	Weather Data
 +	Demographics
 
 We are also planning to work with Stock Data and study various patterns.
