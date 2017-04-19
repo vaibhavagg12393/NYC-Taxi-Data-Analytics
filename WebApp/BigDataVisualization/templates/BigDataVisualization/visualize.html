@@ -1,0 +1,33 @@
+{% extends "BigDataVisualization/header.html" %}
+{% block head %}
+    {% load staticfiles %}
+    <script src='{% static 'js/Chart.min.js' %}'></script>
+    <style>
+        a:visited,a:active,a:hover,a:link{
+            color: #333;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1> Topics </h1>
+        <div class="col-md-5">
+            <ul class="list-group">
+              <a href="/report/1"><li class="list-group-item">Traffic Analysis by hour</li></a>
+              <a href="/report/2"><li class="list-group-item">Rate Code Analysis</li></a>
+              <a href="/report/3"><li class="list-group-item">Night Life Analysis</li></a>
+              <a href="/report/4"><li class="list-group-item">Fare Time Analysis</li></a>
+              <a href="/report/5"><li class="list-group-item">Credit Cash Time</li></a>
+              <a href="/report/6"><li class="list-group-item">Credit Cash Distance</li></a>
+              <a href="/report/7"><li class="list-group-item">Month Wise Trips</li></a>
+              <a href="/report/8"><li class="list-group-item">Day Wise Trips</li></a>
+              <a href="/report/9"><li class="list-group-item">Borough Wise Trips</li></a>
+              <a href="/report/10"><li class="list-group-item">Favorite Trips</li></a>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> BigData Project </title>
+        <meta charset='utf-8'/>
+        {% load staticfiles %}
+        <script src='{% static 'js/jquery.min.js' %}'></script>
+        <link rel='stylesheet' href='{% static 'css/bootstrap.min.css' %}' type='text/css'/>
+        <link rel='stylesheet' href='{% static 'css/webapp.css' %}' type='text/css'/>
+        <script src='{% static 'js/bootstrap.min.js' %}'></script>
+        <script src='{% static 'js/Chart.min.js' %}'></script>
+
+        <script language="Text/Javascript">
+            $(document).ready(function () {
+                $('.nav li a').click(function() {
+                var $this = $(this);
+                $this.parent().siblings().removeClass('active').end().addClass('active');
+                });
+            });
+        </script>
+        {% block head %}
+        {% endblock %}
+    </head>
+
+    <body style="padding-top:50px;padding-left:10px;padding-right:10px;">
+        {% include "BigDataVisualization/navbar.html" %}
+        {% block content %}
+        {% endblock %}
+    </body>
+
+</html>

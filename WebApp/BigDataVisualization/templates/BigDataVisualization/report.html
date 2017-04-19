@@ -1,0 +1,250 @@
+{% extends "BigDataVisualization/header.html" %}
+{% block content %}
+    <div class="container">
+        <h1 style="text-align:center">Report</h1>
+        <div class="row">
+            <div class="col col-md-3">
+                <select id="select_year" class="form-control">
+                    <option value="2013">2013</option>
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                </select>
+            </div>
+        </div>
+        <div id="canvas_holder">
+            <canvas id="report_chart" style="height:40px"></canvas>
+        </div>
+        {% if  d_time_2013 %}
+            <div class="row">
+                <div class="col col-md-3">
+                    <h5>Day Type</h5>
+                    <select id="day_type" class="form-control">
+                        <option value="weekday">Weekday</option>
+                        <option value="weekend">Weekend</option>
+                    </select>
+                </div>
+                <div class="col col-md-3">
+                    <h5>Group By</h5>
+                    <select id="group_by" class="form-control">
+                        <option value="dist">Distance Range</option>
+                        <option value="time">Time Slot</option>
+                    </select>
+                </div>
+                <div class="col col-md-3">
+                    <h5>Group By Range</h5>
+                    <select id="x_axis" class="form-control">
+                        {% for i in dist_keys_2013 %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col col-md-3">
+                    <h5>Y-Axis</h5>
+                    <select id="y_axis" class="form-control">
+                        <option value="fare">Fare</option>
+                        <option value="time">Time</option>
+                    </select>
+                </div>
+            </div>
+            <script>
+                function generate_chart() {
+                    var ctx = document.getElementById("report_chart");
+                    var xLabel = null;
+                    var yLabel = null;
+                    if ($("#y_axis").val() == "fare") {
+                        yLabel = "Fare";
+                    } else {
+                        yLabel = "Trip Time";
+                    }
+                    window.v = null;
+                    if ($("#day_type").val() == "weekday") {
+                        if ($("#group_by").val() == "dist") {
+                            if ($("#select_year").val() == 2013) {
+                                v ={{ d_dist_2013|safe }};
+                            } else if ($("#select_year").val() == 2014) {
+                                v ={{ d_dist_2014|safe }};
+                            } else {
+                                v ={{ d_dist_2015|safe }};
+                            }
+                            xLabel = "Time Slots";
+                        } else {
+                            if ($("#select_year").val() == 2013) {
+                                v ={{ d_time_2013|safe }};
+                            } else if ($("#select_year").val() == 2014) {
+                                v ={{ d_time_2014|safe }};
+                            } else {
+                                v ={{ d_time_2015|safe }};
+                            }
+                            xLabel = "Distance Range";
+                        }
+                    } else {
+                        if ($("#group_by").val() == "dist") {
+                            if ($("#select_year").val() == 2013) {
+                                v ={{ n_dist_2013|safe }};
+                            } else if ($("#select_year").val() == 2014) {
+                                v ={{ n_dist_2014|safe }};
+                            } else {
+                                v ={{ n_dist_2015|safe }};
+                            }
+
+                            xLabel = "Time Slots";
+                        } else {
+                            if ($("#select_year").val() == 2013) {
+                                v ={{ n_time_2013|safe }};
+                            } else if ($("#select_year").val() == 2014) {
+                                v ={{ n_time_2014|safe }};
+                            } else {
+                                v ={{ n_time_2015|safe }};
+                            }
+
+                            xLabel = "Distance Range";
+                        }
+                    }
+                    var idx_y = null;
+                    if ($("#y_axis").val() == "fare") {
+                        idx_y = 1;
+                    } else {
+                        idx_y = 2;
+                    }
+                    var c1 = null;
+                    var c2 = null;
+                    if($("#day_type").val()=="weekday"){
+                        c1="rgba(22,70,225,0.4)";
+                        c2="rgba(22,70,225,1)";
+                    }else{
+                        c1="rgba(0,153,0,0.4)";
+                        c2="rgba(0,153,0,1)";
+                    }
+                    var data = {
+
+                        labels: v[$("#x_axis").val()][0],
+                        datasets: [
+                            {
+                                label: "Analysis",
+                                backgroundColor: c1,
+                                borderColor: c2,
+                                borderWidth: 1,
+                                data: v[$("#x_axis").val()][idx_y],
+                            }
+                        ]
+                    };
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: data,
+                        options: options = {
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: yLabel
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: xLabel
+                                    }
+                                }]
+                            },
+
+                        }
+                    });
+                }
+                $(document).ready(function () {
+                    var x = '{{ check_chart}}';
+                    if (x != "null") {
+                        generate_chart();
+                        $("#x_axis")
+                                .change(function () {
+                                    $("#report_chart").remove();
+                                    $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                                    generate_chart();
+                                });
+                        $("#y_axis")
+                                .change(function () {
+                                    $("#report_chart").remove();
+                                    $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                                    generate_chart();
+                                });
+                        $("#group_by")
+                                .change(function () {
+                                    $("#report_chart").remove();
+                                    $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                                    $("#x_axis").find("option").remove();
+                                    if ($("#group_by").val() == "dist") {
+                                        {% for i in  dist_keys_2013%}
+                                            $("#x_axis").append("<option value= '{{ i }}' > {{ i }} </option>");
+                                        {% endfor %}
+                                    } else {
+                                        {% for i in  time_keys_2013%}
+                                            $("#x_axis").append("<option value='{{ i }}' > {{ i }} </option>");
+                                        {% endfor %}
+                                    }
+                                    generate_chart();
+                                });
+                        $("#day_type")
+                                .change(function () {
+                                    $("#report_chart").remove();
+                                    $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                                    generate_chart();
+                                });
+                        $("#select_year")
+                                .change(function () {
+                                    $("#report_chart").remove();
+                                    $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                                    generate_chart();
+                                });
+                    }
+                });
+
+            </script>
+        {% elif html%}
+            <div id="table_holder">
+                {{ chart_2013|safe }}
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $("#select_year").change(function () {
+                        generate_chart();
+                    });
+                });
+                function generate_chart() {
+                    $("#output_table").remove();
+                    if ($("#select_year").val() == 2013) {
+                        $("#table_holder").append("{{ chart_2013|safe }}");
+                    } else if ($("#select_year").val() == 2014) {
+                        $("#table_holder").append("{{ chart_2014|safe }}");
+                    } else {
+                        $("#table_holder").append("{{ chart_2015|safe }}");
+                    }
+                }
+            </script>
+        {% else %}
+            <script>
+                var ctx = document.getElementById("report_chart");
+                var myChart = {{ chart_2013|safe }};
+                $(document).ready(function () {
+                    $("#select_year").change(function () {
+                        generate_chart();
+                    });
+                });
+                function generate_chart() {
+                    $("#report_chart").remove();
+                    $("#canvas_holder").append("<canvas id='report_chart'></canvas>");
+                    var ctx = document.getElementById("report_chart");
+                    var myChart = null;
+                    if ($("#select_year").val() == 2013) {
+                        myChart = {{ chart_2013|safe }};
+                    } else if ($("#select_year").val() == 2014) {
+                        myChart = {{ chart_2014|safe }};
+                    } else {
+                        myChart = {{ chart_2015|safe }};
+                    }
+                }
+            </script>
+        {% endif %}
+
+        <hr/>
+        <br/><br/><br/><br/>
+    </div><!-- /.container -->
+{% endblock %}

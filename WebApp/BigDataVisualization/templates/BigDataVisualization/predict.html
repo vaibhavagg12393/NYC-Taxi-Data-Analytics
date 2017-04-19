@@ -1,0 +1,355 @@
+{% extends "BigDataVisualization/header.html" %}
+{% block head %}
+    {% load staticfiles %}
+    <script src='{% static 'js/Chart.min.js' %}'></script>
+    <style>
+        a:visited, a:active, a:hover, a:link {
+            color: #333;
+        }
+    </style>
+    <script type="text/javascript">
+        function extract_range() {
+            var dist_range = $("#dist_range").val();
+            var values = dist_range.split("-");
+            return [parseInt(values[0]), parseInt(values[1])];
+        }
+        $(document).ready(function () {
+            $("#query").click(function () {
+                var result = extract_range();
+                var d1 = result[0];
+                var d2 = result[1];
+                var fare = 0.6145 * parseInt($("#year").val()) + 1.7178 * d1 + 0.7253 * d2 + -1229.7124;
+                var time = 154.605 * parseInt($("#year").val()) + 94.8256 * d1 + 5.4762 * d2 + -310620.0991;
+                var time_range = $("#time_range").val();
+                if (d1 == 0 && d2 == 3 && time_range == "0-7") {
+                    fare += -0.553541564;
+                    time += -173.9392308;
+                }
+                else if (d1 == 0 && d2 == 3 && time_range == "7-10") {
+                    fare += 0.304654454;
+                    time += 41.24297116;
+                }
+                else if (d1 == 0 && d2 == 3 && time_range == "10-12") {
+                    fare += 0.597468732;
+                    time += 93.99102515;
+                }
+                else if (d1 == 0 && d2 == 3 && time_range == "12-17") {
+                    fare += 0.484843251;
+                    time += 65.71110721;
+                }
+                else if (d1 == 0 && d2 == 3 && time_range == "17-20") {
+                    fare += 0.042032698;
+                    time += -4.840784479;
+                }
+                else if (d1 == 0 && d2 == 3 && time_range == "20-22") {
+                    fare += -0.217625329;
+                    time += -77.21979732;
+                }
+                else if (d1 == 0 && d2 == 3 && time_range == "22-24") {
+                    fare += -0.241890842;
+                    time += -98.92733558;
+                }
+                else if (d1 == 3 && d2 == 6 && time_range == "0-7") {
+                    fare += -1.387991125;
+                    time += -327.5178008;
+                }
+                else if (d1 == 3 && d2 == 6 && time_range == "7-10") {
+                    fare += 0.505712949;
+                    time += 56.44170142;
+                }
+                else if (d1 == 3 && d2 == 6 && time_range == "10-12") {
+                    fare += 1.265505147;
+                    time += 162.9688496;
+                }
+                else if (d1 == 3 && d2 == 6 && time_range == "12-17") {
+                    fare += 1.134134884;
+                    time += 168.303161;
+                }
+                else if (d1 == 3 && d2 == 6 && time_range == "17-20") {
+                    fare += -0.134553976;
+                    time += -18.66929892;
+                }
+                else if (d1 == 3 && d2 == 6 && time_range == "20-22") {
+                    fare += -0.767385391;
+                    time += -168.9705019;
+                }
+                else if (d1 == 3 && d2 == 6 && time_range == "22-24") {
+                    fare += -0.725816905;
+                    time += -194.9653341;
+                }
+                else if (d1 == 6 && d2 == 9 && time_range == "0-7") {
+                    fare += -1.481599568;
+                    time += -302.2384202;
+                }
+                else if (d1 == 6 && d2 == 9 && time_range == "7-10") {
+                    fare += 0.120819;
+                    time += -11.98794233;
+                }
+                else if (d1 == 6 && d2 == 9 && time_range == "10-12") {
+                    fare += 0.572473352;
+                    time += -12.2872549;
+                }
+                else if (d1 == 6 && d2 == 9 && time_range == "12-17") {
+                    fare += 1.127222947;
+                    time += 133.2408316;
+                }
+                else if (d1 == 6 && d2 == 9 && time_range == "17-20") {
+                    fare += -0.239537185;
+                    time += -53.09059124;
+                }
+                else if (d1 == 6 && d2 == 9 && time_range == "20-22") {
+                    fare += -0.669526428;
+                    time += -148.9974641;
+                }
+                else if (d1 == 6 && d2 == 9 && time_range == "22-24") {
+                    fare += -0.61297458;
+                    time += -135.8844376;
+                }
+                else if (d1 == 9 && d2 == 12 && time_range == "0-7") {
+                    fare += -1.67428636;
+                    time += -392.9907722;
+                }
+                else if (d1 == 9 && d2 == 12 && time_range == "7-10") {
+                    fare += 1.030391153;
+                    time += 141.3161366;
+                }
+                else if (d1 == 9 && d2 == 12 && time_range == "10-12") {
+                    fare += 0.963882099;
+                    time += 87.41103148;
+                }
+                else if (d1 == 9 && d2 == 12 && time_range == "12-17") {
+                    fare += 1.251115409;
+                    time += 254.5679203;
+                }
+                else if (d1 == 9 && d2 == 12 && time_range == "17-20") {
+                    fare += -0.414412628;
+                    time += -57.31413567;
+                }
+                else if (d1 == 9 && d2 == 12 && time_range == "20-22") {
+                    fare += -1.042188368;
+                    time += -240.0490005;
+                }
+                else if (d1 == 9 && d2 == 12 && time_range == "22-24") {
+                    fare += -0.954300301;
+                    time += -238.7883024;
+                }
+                else if (d1 == 12 && d2 == 15 && time_range == "0-7") {
+                    fare += -1.252447506;
+                    time += -446.4852287;
+                }
+                else if (d1 == 12 && d2 == 15 && time_range == "7-10") {
+                    fare += 0.379664348;
+                    time += 143.5868451;
+                }
+                else if (d1 == 12 && d2 == 15 && time_range == "10-12") {
+                    fare += 0.459812823;
+                    time += 15.91696327;
+                }
+                else if (d1 == 12 && d2 == 15 && time_range == "12-17") {
+                    fare += 2.174246777;
+                    time += 352.6284468;
+                }
+                else if (d1 == 12 && d2 == 15 && time_range == "17-20") {
+                    fare += -0.342975671;
+                    time += -48.95054167;
+                }
+                else if (d1 == 12 && d2 == 15 && time_range == "20-22") {
+                    fare += -0.283036919;
+                    time += -278.1351383;
+                }
+                else if (d1 == 12 && d2 == 15 && time_range == "22-24") {
+                    fare += -1.351055762;
+                    time += -282.2685241;
+                }
+                else if (d1 == 15 && d2 == 18 && time_range == "0-7") {
+                    fare += -0.11364512;
+                    time += -524.1503335;
+                }
+                else if (d1 == 15 && d2 == 18 && time_range == "7-10") {
+                    fare += 0.647144289;
+                    time += 357.087876;
+                }
+                else if (d1 == 15 && d2 == 18 && time_range == "10-12") {
+                    fare += 0.863004547;
+                    time += 99.65109053;
+                }
+                else if (d1 == 15 && d2 == 18 && time_range == "12-17") {
+                    fare += 1.065278697;
+                    time += 643.5733797;
+                }
+                else if (d1 == 15 && d2 == 18 && time_range == "17-20") {
+                    fare += -0.468011464;
+                    time += -8.304539554;
+                }
+                else if (d1 == 15 && d2 == 18 && time_range == "20-22") {
+                    fare += -1.741908066;
+                    time += -415.7172426;
+                }
+                else if (d1 == 15 && d2 == 18 && time_range == "22-24") {
+                    fare += -1.884375447;
+                    time += -458.1985105;
+                }
+                else if (d1 == 18 && d2 == 21 && time_range == "0-7") {
+                    fare += -0.073601067;
+                    time += -567.4209154;
+                }
+                else if (d1 == 18 && d2 == 21 && time_range == "7-10") {
+                    fare += 0.323484186;
+                    time += 409.5857705;
+                }
+                else if (d1 == 18 && d2 == 21 && time_range == "10-12") {
+                    fare += 0.654151062;
+                    time += 199.8806851;
+                }
+                else if (d1 == 18 && d2 == 21 && time_range == "12-17") {
+                    fare += 0.400339674;
+                    time += 612.5150762;
+                }
+                else if (d1 == 18 && d2 == 21 && time_range == "17-20") {
+                    fare += -0.622734964;
+                    time += -70.96014468;
+                }
+                else if (d1 == 18 && d2 == 21 && time_range == "20-22") {
+                    fare += -0.647904392;
+                    time += -469.8399947;
+                }
+                else if (d1 == 18 && d2 == 21 && time_range == "22-24") {
+                    fare += -0.479814657;
+                    time += -532.9311615;
+                }
+                else if (d1 == 21 && d2 == 24 && time_range == "0-7") {
+                    fare += 0.63087943;
+                    time += -526.2587242;
+                }
+                else if (d1 == 21 && d2 == 24 && time_range == "7-10") {
+                    fare += -1.436312566;
+                    time += 378.5737202;
+                }
+                else if (d1 == 21 && d2 == 24 && time_range == "10-12") {
+                    fare += -0.965929014;
+                    time += 164.5788757;
+                }
+                else if (d1 == 21 && d2 == 24 && time_range == "12-17") {
+                    fare += -1.384371163;
+                    time += 640.9737609;
+                }
+                else if (d1 == 21 && d2 == 24 && time_range == "17-20") {
+                    fare += -0.500386106;
+                    time += -103.436143;
+                }
+                else if (d1 == 21 && d2 == 24 && time_range == "20-22") {
+                    fare += 1.413636266;
+                    time += -508.2606786;
+                }
+                else if (d1 == 21 && d2 == 24 && time_range == "22-24") {
+                    fare += 2.553399001;
+                    time += -534.4892625;
+                }
+                else if (d1 == 24 && d2 == 50 && time_range == "0-7") {
+                    fare += -3.73979062;
+                    time += -480.917733;
+                }
+                else if (d1 == 24 && d2 == 50 && time_range == "7-10") {
+                    fare += -5.536478402;
+                    time += 253.8481397;
+                }
+                else if (d1 == 24 && d2 == 50 && time_range == "10-12") {
+                    fare += 0.686269422;
+                    time += 159.3372954;
+                }
+                else if (d1 == 24 && d2 == 50 && time_range == "12-17") {
+                    fare += -10.39790569;
+                    time += 469.1215758;
+                }
+                else if (d1 == 24 && d2 == 50 && time_range == "17-20") {
+                    fare += -4.876081178;
+                    time += -243.851959;
+                }
+                else if (d1 == 24 && d2 == 50 && time_range == "20-22") {
+                    fare += -0.573404833;
+                    time += -498.2383298;
+                }
+                else if (d1 == 24 && d2 == 50 && time_range == "22-24") {
+                    fare += 0.879259277;
+                    time += -495.4080023;
+                }
+                time = Math.round(time*100)/100;
+                console.log(time);
+                var minutes = 0;
+                var seconds = 0;
+                var hours = 0;
+                var timeUnit;
+                if (time<=60) {
+                    timeUnit=time+" seconds";
+                    }
+                else if (time>60 && time<3600) {
+                    minutes = Math.floor(time / 60);
+                    seconds = Math.floor(time - minutes * 60);
+                    timeUnit = minutes+" minutes "+seconds+" seconds";
+                    }
+                else if(time>=3600) {
+                    hours = Math.floor(time/3600);
+                    minutes = Math.floor((time-hours*3600)/60);
+                    seconds = Math.floor(time-(hours*3600)-(minutes*60));
+                    timeUnit = hours+" hour "+minutes+" minutes "+seconds+" seconds";
+                    }
+                $("#result_fare").text("$ " + Math.round(fare * 100) / 100);
+                $("#result_time").text(timeUnit);
+            });
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1> Fare Time Calculator </h1>
+        <div class="row">
+            <div class="col col-md-4">
+                <label> Enter Year </label>
+                <select class="form-control" id="year">
+                    {% for i in years %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col col-md-4">
+                <label> Distance Range (in Miles)</label>
+                <select class="form-control" id="dist_range">
+                    {% for i in dist_range %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col col-md-4">
+                <label> Time Range (in hours of day)</label>
+                <select class="form-control" id="time_range">
+                    {% for i in time_range %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col col-md-3">
+                <button class="btn btn-primary" id="query">Calculate !</button>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col col-md-3">
+                <label> Time: </label>
+                <label id="result_time"></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-md-3">
+                <label> Fare: </label>
+                <label id="result_fare"></label>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
